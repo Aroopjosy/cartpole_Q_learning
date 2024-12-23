@@ -42,7 +42,7 @@ The CartPole problem is a classic reinforcement learning challenge where an agen
     ``` bash 
     python train_cartpole.py
     ```
-    _Only run after training completed._
+    _Only test after training completed._
 4. Test
     ```bash
     python test_cartpole.py
