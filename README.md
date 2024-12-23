@@ -33,19 +33,19 @@ The CartPole problem is a classic reinforcement learning challenge where an agen
     pip install -r requirements.txt
    ```
 2. create virual environment
-```bash
-virtualenv cartpole-env
-source cartpole-env/bin/activate
-```
+    ```bash
+    virtualenv cartpole-env
+    source cartpole-env/bin/activate
+    ```
 
 3. Train 
-``` bash 
-python train_cartpole.py
-```
+    ``` bash 
+    python train_cartpole.py
+    ```
 
 4. Test
-```bash
-python test_cartpole.py
-```
+    ```bash
+    python test_cartpole.py
+    ```
 
 
