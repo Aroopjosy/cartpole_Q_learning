@@ -9,9 +9,9 @@ This repository contains an implementation to solve the [CartPole-v1](https://gy
 
 ## Table Content
 
-- Introduction
-- Demo Video
-- How to Run the Code
+- [Introduction](https://github.com/Aroopjosy/cartpole_balance?tab=readme-ov-file#introduction)
+- [Demo Video](https://github.com/Aroopjosy/cartpole_balance?tab=readme-ov-file#demo-video-1)
+- [How to Run the Code](https://github.com/Aroopjosy/cartpole_balance?tab=readme-ov-file#how-to-run-the-code)
 
 ## Introduction
 
