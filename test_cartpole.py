@@ -53,15 +53,5 @@ def test():
 
     env.close() # Close the environment
 
-
-    # plt.figure(figsize=(10, 6))
-    # plt.plot(rewards_per_episode, marker='o', label='Rewards per Episode')
-    # plt.title('Performance of CartPole Agent')
-    # plt.xlabel('Episode')
-    # plt.ylabel('Total Reward')
-    # plt.grid(True)
-    # plt.legend()
-    # plt.show()
-
 if __name__ == '__main__':
     test()

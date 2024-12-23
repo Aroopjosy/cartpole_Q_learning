@@ -2,38 +2,7 @@ import gymnasium as gym
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-
-def plot_performance(rewards_per_episode):
-        plt.plot(rewards_per_episode)
-        plt.xlabel('Episode')
-        plt.ylabel('Total Reward')
-        plt.title('Training Performance: CartPole-v1') 
-        plt.grid()
-        plt.savefig('cartpole_episode_total_reward.png')  # Save the second plot
-        # plt.show()
-
-
-def plot_learning_curve(rewards_per_episode, window_size=100):
-    """Plot the learning curve by averaging rewards over a sliding window."""
-    smoothed_rewards = [np.mean(rewards_per_episode[max(0, i - window_size):i + 1]) for i in range(len(rewards_per_episode))]
-    plt.plot(smoothed_rewards)
-    plt.xlabel('Episode')
-    plt.ylabel('Smoothed Reward')
-    plt.title('Learning Curve: CartPole-v1')
-    plt.grid()
-    plt.savefig('learning_curve.png')  # Save the learning curve plot
-    # plt.show()  # Display the plot  
-
-def plot_epsilon_decay(epsilon_history):
-    """Plot the decay of epsilon over episodes."""
-    plt.plot(epsilon_history)
-    plt.xlabel('Episode')
-    plt.ylabel('Epsilon')
-    plt.title('Epsilon Decay over Episodes')
-    plt.grid()
-    plt.savefig('epsilon_decay.png')  # Save the epsilon decay plot
-
+# Train the agent using Q-learning
 
 def train(render=False):
     env = gym.make('CartPole-v1', render_mode='human' if render else None)
@@ -44,7 +13,7 @@ def train(render=False):
     ang_space = np.linspace(-.2095, .2095, 20)
     ang_vel_space = np.linspace(-4, 4, 20)
 
-    Q_table = np.zeros((len(pos_space)+1, len(vel_space)+1, len(ang_space)+1, len(ang_vel_space)+1, env.action_space.n)) # 15x15x15x15x2 array
+    Q_table = np.zeros((len(pos_space)+1, len(vel_space)+1, len(ang_space)+1, len(ang_vel_space)+1, env.action_space.n)) # 21x21x21x21x2 array
     print("Q_table initialized")
     print("Q_table Shape: ", Q_table.shape)
 
@@ -54,9 +23,9 @@ def train(render=False):
     epsilon_decay_rate = 0.0001  # Epsilon decay rate
     rng = np.random.default_rng()  # Random number generator
 
-    rewards_per_episode = []
+    rewards_per_episode = [] # Store rewards for each episode
 
-    i = 0
+    i = 0 # Episode number
 
     while True:
         state = env.reset()[0]  # Starting position, velocity, angle, angular velocity
@@ -80,9 +49,11 @@ def train(render=False):
             new_state_a = np.digitize(new_state[2], ang_space)
             new_state_av = np.digitize(new_state[3], ang_vel_space)
 
+                # Update Q-table using Bellman equation
+
             Q_table[state_p, state_v, state_a, state_av, action] += learning_rate_a * (
                 reward + discount_factor_g * np.max(Q_table[new_state_p, new_state_v, new_state_a, new_state_av, :]) - Q_table[state_p, state_v, state_a, state_av, action]
-            )
+            ) 
 
             state = new_state
             state_p = new_state_p
@@ -90,9 +61,9 @@ def train(render=False):
             state_a = new_state_a
             state_av = new_state_av
 
-            rewards += reward
+            rewards += reward # Accumulate rewards
 
-        rewards_per_episode.append(rewards)
+        rewards_per_episode.append(rewards) # Store rewards for this episode
 
         if i % 100 == 0:
             print(f'Episode: {i} Rewards: {rewards} Epsilon: {epsilon:.2f} Mean Reward: {np.mean(rewards_per_episode[-100:]):.2f}')
@@ -103,33 +74,23 @@ def train(render=False):
 
         epsilon = max(epsilon - epsilon_decay_rate, 0)  # Decay epsilon
 
-        i += 1
+        i += 1 # Increment episode number
 
     env.close()
 
     # Save Q_table to file
-    # with open('cartpole_Q_table111.pkl', 'wb') as f:
-    #     pickle.dump(Q_table, f)
-    #     f.close()
-    np.save('Q_table.npy', Q_table)
-    print("Q_table saved")
+    np.save('Q_table.npy', Q_table) 
+    print("Q_table saved") 
 
     # Plot the performance
-    plot_performance(rewards_per_episode)
-
-
-
-
-
-    # # Plot the rewards
-    # mean_rewards = [np.mean(rewards_per_episode[max(0, t-100):(t+1)]) for t in range(i)]
-    # plt.plot(mean_rewards)
-    # plt.xlabel("Episode")
-    # plt.ylabel("Mean Reward")
-    # plt.title("Training Performance - CartPole")
-    # plt.grid()
-    # plt.savefig('cartpole_training.png')
-    # print("Training completed. Q_table saved.")
+    mean_rewards = [np.mean(rewards_per_episode[max(0, t-100):(t+1)]) for t in range(i)]
+    plt.plot(mean_rewards)
+    plt.xlabel("Episode")
+    plt.ylabel("Mean Reward")
+    plt.title("Training Performance - CartPole")
+    plt.grid()
+    plt.savefig('cartpole_training.png')
+    print("Training completed. Q_table saved.")
 
     
     
