@@ -25,3 +25,14 @@ The CartPole problem is a classic reinforcement learning challenge where an agen
 
 
 ## How to Run the Code
+
+1. clone & install depedencies
+   ```bash
+    git clone https://github.com/Aroopjosy/cartpole_balance.git
+    cd cartpole_balance
+   pip install -r requirements.txt
+   ```
+2. create virual environment
+
+
+
