@@ -92,11 +92,6 @@ def train(render=False):
     plt.savefig('cartpole_training.png')
     print("Training completed. Q_table saved.")
 
-    
-    
-
-
-
 
 
 if __name__ == '__main__':
