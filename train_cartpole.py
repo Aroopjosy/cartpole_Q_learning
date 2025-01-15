@@ -19,8 +19,9 @@ def train(render=False):
 
     learning_rate_a = 0.1  # alpha or learning rate
     discount_factor_g = 0.99  # gamma or discount factor
-    epsilon = 1  # Start with 100% random actions
-    epsilon_decay_rate = 0.0001  # Epsilon decay rate
+    epsilon = 1.0  # Start with 100% random actions
+    epsilon_decay_rate = 0.0005  # Epsilon decay rate
+
     rng = np.random.default_rng()  # Random number generator
 
     rewards_per_episode = [] # Store rewards for each episode
@@ -42,6 +43,7 @@ def train(render=False):
                 action = env.action_space.sample()  # Choose random action exploring the environment
             else:
                 action = np.argmax(Q_table[state_p, state_v, state_a, state_av, :])  # Choose best action from Q-table
+                # print(Q_table[state_p, state_v, state_a, state_av, :])
 
             new_state, reward, terminated, _, _ = env.step(action)
             new_state_p = np.digitize(new_state[0], pos_space)
@@ -68,11 +70,12 @@ def train(render=False):
         if i % 100 == 0:
             print(f'Episode: {i} Rewards: {rewards} Epsilon: {epsilon:.2f} Mean Reward: {np.mean(rewards_per_episode[-100:]):.2f}')
 
-        if np.mean(rewards_per_episode[-100:]) > 100:
+        if np.mean(rewards_per_episode[-100:]) > 200:
             print("Training completed. Mean reward over 100 episodes: ", np.mean(rewards_per_episode[-100:]))
             break
 
-        epsilon = max(epsilon - epsilon_decay_rate, 0)  # Decay epsilon
+        # epsilon = max(epsilon - epsilon_decay_rate, 0)  # Decay epsilon
+        epsilon = epsilon - epsilon_decay_rate if epsilon > 0.01 else 0.01
 
         i += 1 # Increment episode number
 

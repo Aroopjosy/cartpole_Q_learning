@@ -16,7 +16,7 @@ def test():
     print("Q_table loaded")
     print("Q_table Shape: ", Q_table.shape)
 
-    rewards_per_episode = [] # Store rewards for each episode
+    total_rewards = 0 # Total rewards counter
     i = 0 # Episode counter
 
     while i < 10:  # Test for 10 episodes
@@ -31,6 +31,7 @@ def test():
 
         while not terminated: # Loop until episode is terminated
             action = np.argmax(Q_table[state_p, state_v, state_a, state_av, :])  # Choose best action from Q-table
+            # print(f'Q value: {Q_table[state_p, state_v, state_a, state_av, :]} Action: {action}')
             new_state, reward, terminated, truncated, info = env.step(action) # Take action and observe new state, reward, and termination
 
             new_state_p = np.digitize(new_state[0], pos_space) 
@@ -45,12 +46,13 @@ def test():
             state_av = new_state_av
 
             rewards += reward
+            total_rewards += reward
 
-        rewards_per_episode.append(rewards) # Store rewards for this episode
-        print(f'Episode: {i} Rewards: {rewards}') # Print episode number and rewards
+        print(f'Episode: {i} Rewards: {rewards} Total Reward: {total_rewards}') # Print episode number and rewards
 
         i += 1 # Increment episode counter
-
+    mean_rewards = total_rewards / 10 # Calculate mean rewards
+    print(f'Mean rewards Over 10 Episodes: {mean_rewards}') # Print mean rewards
     env.close() # Close the environment
 
 if __name__ == '__main__':
