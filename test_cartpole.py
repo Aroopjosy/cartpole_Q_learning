@@ -6,10 +6,10 @@ def test():
     env = gym.make('CartPole-v1', render_mode='human')  # Set render_mode to 'human' to visualize
 
     # Define state spaces (position, velocity, pole angle, pole angular velocity)
-    pos_space = np.linspace(-2.4, 2.4, 20)
-    vel_space = np.linspace(-4, 4, 20)
-    ang_space = np.linspace(-.2095, .2095, 20)
-    ang_vel_space = np.linspace(-4, 4, 20)
+    pos_space = np.linspace(-2.4, 2.4, 10)
+    vel_space = np.linspace(-4, 4, 10)
+    ang_space = np.linspace(-.2095, .2095, 10)
+    ang_vel_space = np.linspace(-4, 4, 10)
 
     # Load pre-trained Q-table from file and print its shape
     Q_table = np.load('Q_table.npy', allow_pickle=True)

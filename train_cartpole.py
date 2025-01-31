@@ -8,10 +8,10 @@ def train(render=False):
     env = gym.make('CartPole-v1', render_mode='human' if render else None)
 
     # Define state spaces (position, velocity, pole angle, pole angular velocity)
-    pos_space = np.linspace(-2.4, 2.4, 20)
-    vel_space = np.linspace(-4, 4, 20)
-    ang_space = np.linspace(-.2095, .2095, 20)
-    ang_vel_space = np.linspace(-4, 4, 20)
+    pos_space = np.linspace(-2.4, 2.4, 10)
+    vel_space = np.linspace(-4, 4, 10)
+    ang_space = np.linspace(-.2095, .2095, 10)
+    ang_vel_space = np.linspace(-4, 4, 10)
 
     Q_table = np.zeros((len(pos_space)+1, len(vel_space)+1, len(ang_space)+1, len(ang_vel_space)+1, env.action_space.n)) # 21x21x21x21x2 array
     print("Q_table initialized")
@@ -20,7 +20,7 @@ def train(render=False):
     learning_rate_a = 0.1  # alpha or learning rate
     discount_factor_g = 0.99  # gamma or discount factor
     epsilon = 1.0  # Start with 100% random actions
-    epsilon_decay_rate = 0.0005  # Epsilon decay rate
+    epsilon_decay_rate = 0.0003  # Epsilon decay rate
 
     rng = np.random.default_rng()  # Random number generator
 
@@ -38,7 +38,7 @@ def train(render=False):
         terminated = False
         rewards = 0
 
-        while not terminated and rewards < 10000:
+        while not terminated and rewards < 10000: 
             if rng.random() < epsilon:
                 action = env.action_space.sample()  # Choose random action exploring the environment
             else:
@@ -70,7 +70,8 @@ def train(render=False):
         if i % 100 == 0:
             print(f'Episode: {i} Rewards: {rewards} Epsilon: {epsilon:.2f} Mean Reward: {np.mean(rewards_per_episode[-100:]):.2f}')
 
-        if np.mean(rewards_per_episode[-100:]) > 200:
+        if np.mean(rewards_per_episode[-100:]) > env.spec.reward_threshold: #475
+
             print("Training completed. Mean reward over 100 episodes: ", np.mean(rewards_per_episode[-100:]))
             break
 
