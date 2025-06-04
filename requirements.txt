@@ -1,4 +1,4 @@
 gymnasium==1.0.0
+gymnasium[classic-control]
 matplotlib==3.10.0
 numpy==2.2.1
-virtualenv==20.28.0
